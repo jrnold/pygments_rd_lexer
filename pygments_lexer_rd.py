@@ -4,9 +4,8 @@
     :copyright: Copyright 2012 Jeffrey B. Arnold
     :license: BSD, see LICENSE for details.
 """
-from pygments.lexer import RegexLexer, include, bygroups
-from pygments.token import Comment, Punctuation, Keyword, Name, \
-     Operator, Number, Text
+from pygments.lexer import RegexLexer
+from pygments.token import Comment, Punctuation, Keyword, String, Text
 
 __all__ = ['RdLexer']
 
@@ -32,11 +31,14 @@ class RdLexer(RegexLexer):
             # special macros with no arguments
             (r'\\(?:cr|l?dots|R|tab)\b', Keyword.Constant),
             # macros
+            # TODO: split into real macros names with sections and markup macros.
             (r'\\[a-zA-Z]+\b', Keyword),
             # special preprocessor macros
             (r'^#(?:ifn?def|endif).*\b', Comment.Preproc),
             # Non escaped brackets
             (r'[{}\[\]]', Punctuation),
+            # everything else
+            (r'.', Text),
             ]
         }
 
