@@ -56,7 +56,7 @@ foo(x, y)
 #ifdef unix
 Now windows
 #endif
-ifndef windows
+#ifndef windows
 Using windows
 #endif
 

@@ -5,7 +5,7 @@
     :license: BSD, see LICENSE for details.
 """
 from pygments.lexer import RegexLexer
-from pygments.token import Comment, Punctuation, Keyword, String, Text
+from pygments.token import Comment, Punctuation, Keyword, String, Text, Name
 
 __all__ = ['RdLexer']
 
@@ -22,10 +22,12 @@ class RdLexer(RegexLexer):
     aliases = ['rd']
     filenames = ['*.Rd']
 
+    # To account for verbatim / LaTeX-like / and R-like areas
+    # would require parsing.
     tokens = {
         'root' : [
             # catch escaped brackets and percent sign
-            (r'\\[{}%]', String.Escape),
+            (r'\\[\\{}%]', String.Escape),
             # comments
             (r'%.*$', Comment),
             # special macros with no arguments
@@ -34,9 +36,9 @@ class RdLexer(RegexLexer):
             # TODO: split into real macros names with sections and markup macros.
             (r'\\[a-zA-Z]+\b', Keyword),
             # special preprocessor macros
-            (r'^#(?:ifn?def|endif).*\b', Comment.Preproc),
+            (r'^\s*#(?:ifn?def|endif).*\b', Comment.Preproc),
             # Non escaped brackets
-            (r'[{}\[\]]', Punctuation),
+            (r'[{}]', Name.Builtin),
             # everything else
             (r'.', Text),
             ]
